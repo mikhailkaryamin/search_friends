@@ -10,7 +10,7 @@ import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader
 
 import Icon24Filter from '@vkontakte/icons/dist/24/filter';
 
-const Home = ({ fetchedFriends, onOpenModal }) => {
+const Home = ({ friends, onOpenModal }) => {
   return (
     <Panel>
       <PanelHeader>
@@ -19,10 +19,10 @@ const Home = ({ fetchedFriends, onOpenModal }) => {
       <PanelHeaderButton onClick={() => onOpenModal("filters")}>
         <Icon24Filter />
       </PanelHeaderButton>
-      {fetchedFriends && (
+      {friends && (
         <Group title="Friends list">
           {
-            fetchedFriends.map((friend, i) => {
+            friends.map((friend, i) => {
               return (
                 <Cell
                   key={`${i}-${friend.id}`}
@@ -40,7 +40,7 @@ const Home = ({ fetchedFriends, onOpenModal }) => {
 };
 
 Home.propTypes = {
-  fetchedFriends: arrayOf(shape({
+  friends: arrayOf(shape({
     photo_100: string,
     first_name: string,
     last_name: string,
