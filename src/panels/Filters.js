@@ -1,36 +1,87 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from "react-redux";
+import { func } from 'prop-types';
+import {
+  Button,
+  FormLayout,
+  FormLayoutGroup,
+  Select,
+  Search,
+} from '@vkontakte/vkui';
 
-import FormLayout from '@vkontakte/vkui/dist/components/FormLayout/FormLayout';
-import FormLayoutGroup from '@vkontakte/vkui/dist/components/FormLayoutGroup/FormLayoutGroup';
-import Radio from '@vkontakte/vkui/dist/components/Radio/Radio';
-import Search from '@vkontakte/vkui/dist/components/Search/Search';
-import SelectMimicry from '@vkontakte/vkui/dist/components/SelectMimicry/SelectMimicry';
+import { ActionCreator as ActionFriends } from '../actions/friends';
 
-const Filters = () => {
+const getAgeList = () => {
+  const list = new Array(99).fill(``).map((el, i) => {
+    return (
+      <option
+        key={i}
+        value={i + 1}
+      >
+        {i + 1}
+      </option>
+    )
+  });
+  return list;
+}
+
+const Filters = ({ setActiveModal }) => {
+    const [age, setAge] = useState(null);
+    const [gender, setGender] = useState(null);
+    const [lastName, setLastName] = useState(null);
+    const [name, setName] = useState(null);
+
+    const dispatch = useDispatch();
+
     return (
       <FormLayout>
         <Search
-          placeholder="First name"
-          onChange={() => {}}
+          placeholder="Имя"
+          onChange={(evt) => setName(evt.target.value)}
           after={null}
         />
         <Search
-          placeholder="Last name"
-          onChange={() => {}}
+          placeholder="Фамилия"
+          onChange={(evt) => setLastName(evt.target.value)}
           after={null}
         />
-        <SelectMimicry
-          top="Выберите возраст"
-          placeholder="Не выбран"
-        />
 
+        <Select
+          top="Возраст"
+          placeholder="Не выбран"
+          onChange={(evt) => setAge(evt.target.value)}
+        >
+          {getAgeList()}
+        </Select>
         <FormLayoutGroup top="Пол">
-          <Radio name="sex" value="male" defaultChecked>Любой</Radio>
-          <Radio name="sex" value="male">Мужской</Radio>
-          <Radio name="sex" value="female">Женский</Radio>
+          <Select
+            onChange={(evt) => setGender(evt.target.value)}
+            placeholder="Не выбран"
+          >
+            <option value="1">Женский</option>
+            <option value="2">Мужской</option>
+          </Select>
         </FormLayoutGroup>
+        <Button
+          size="xl"
+          onClick={(evt) => {
+            setActiveModal(null)
+            dispatch(ActionFriends.setFilters({
+              age,
+              gender,
+              lastName,
+              name,
+            }))
+          }}
+        >
+          Отфильтровать
+        </Button>
       </FormLayout>
     )
 };
+
+Filters.propTypes = {
+  setActiveModal: func.isRequired,
+}
 
 export default Filters;
