@@ -4,12 +4,23 @@ import React from "react";
 import ReactDOM from "react-dom";
 import bridge from "@vkontakte/vk-bridge";
 import App from "./App";
+import { reducer } from './reducer/friends';
+import { Provider } from "react-redux";
+import { createStore } from "redux";
 
-// bridge.subscribe((e) => console.log(e)); 
-// Init VK  Mini App
 bridge.send("VKWebAppInit");
 
-ReactDOM.render(<App />, document.getElementById("root"));
-if (process.env.NODE_ENV === "development") {
-  import("./eruda").then(({ default: eruda }) => {}); //runtime download
+const store = createStore(
+  reducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : (f) => f
+);
+
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root"));
+  if (process.env.NODE_ENV === "development") {
+    import("./eruda").then(({ default: eruda }) => {}); //runtime download
 }
