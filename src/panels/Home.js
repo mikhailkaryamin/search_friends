@@ -1,38 +1,67 @@
 import React from 'react';
-import { arrayOf, shape, string, func } from 'prop-types';
+import {
+  arrayOf,
+  shape,
+  string,
+  func
+} from 'prop-types';
 
-import Avatar from '@vkontakte/vkui/dist/components/Avatar/Avatar';
-import Cell from '@vkontakte/vkui/dist/components/Cell/Cell';
-import Group from '@vkontakte/vkui/dist/components/Group/Group';
-import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
-import PanelHeaderButton from '@vkontakte/vkui/dist/components/PanelHeaderButton/PanelHeaderButton';
-import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
+import {
+  Avatar,
+  Cell,
+  Group,
+  List,
+  Panel,
+  PanelHeaderButton,
+  PanelHeader,
+} from '@vkontakte/vkui';
 
 import Icon24Filter from '@vkontakte/icons/dist/24/filter';
 
-const Home = ({ friends, onOpenModal }) => {
+const formatGender = (gender) => {
+  switch (gender) {
+    case 1:
+      return `жен`;
+  
+    case 2:
+      return `муж`;
+    
+    default: 
+      return `не определен`;
+  }
+}
+
+const Home = ({ friendsFiltered, setActiveModal }) => {
+
   return (
     <Panel>
-      <PanelHeader>
+      <PanelHeader
+        left={<PanelHeaderButton onClick={() => setActiveModal("filters")}>
+            <Icon24Filter />
+          </PanelHeaderButton>
+        }
+      >
         Friends
       </PanelHeader>
-      <PanelHeaderButton onClick={() => onOpenModal("filters")}>
-        <Icon24Filter />
-      </PanelHeaderButton>
-      {friends && (
+      {friendsFiltered && (
         <Group title="Friends list">
-          {
-            friends.map((friend, i) => {
-              return (
-                <Cell
-                  key={`${i}-${friend.id}`}
-                  before={friend['photo_100'] ? <Avatar src={friend['photo_100']}/> : null}
-                >
-                  {`${friend['first_name']} ${friend['last_name']}`}
-                </Cell>
-              )
-            })
-          }
+          <List>
+            {
+              friendsFiltered.map((friend, i) => {
+                return (
+                  <Cell
+                    asideContent={`Возраст: ${friend.age}`}
+                    before={friend.avatar ? <Avatar src={friend.avatar}/> : null}
+                    description={`Пол: ${formatGender(friend.gender)}`}
+                    key={`${i}-${friend.id}`}
+                    multiline={true}
+                  >
+                    {`${friend.name} ${friend.lastName}`}
+                  </Cell>
+                )
+              })
+            }
+          </List>
         </Group>
       )}
   </Panel>
@@ -40,12 +69,12 @@ const Home = ({ friends, onOpenModal }) => {
 };
 
 Home.propTypes = {
-  friends: arrayOf(shape({
+  friendsFiltered: arrayOf(shape({
     photo_100: string,
     first_name: string,
     last_name: string,
   })),
-  onOpenModal: func.isRequired,
+  setActiveModal: func.isRequired,
 };
 
 export default Home;
