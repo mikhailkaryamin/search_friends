@@ -50,7 +50,7 @@ const App = () => {
   const getFriendsFriends = async () => {
     const authToken = await bridge.send("VKWebAppGetAuthToken", {
       "app_id": APP_ID,
-      "scope": ""
+      "scope": "friends"
     });
 
     const activeFriends = friendsUser.response.items.filter((friend) => {
@@ -146,6 +146,10 @@ const App = () => {
 
   useEffect(() => {
     async function fetchData() {
+      await bridge.send("VKWebAppGetAuthToken", {
+        "app_id": APP_ID,
+        "scope": "friends"
+      });
       const user = await bridge.send('VKWebAppGetUserInfo');
       setUserId(user.id);
       dispatch(ActionFriends.pushFriendsId([user.id]));
