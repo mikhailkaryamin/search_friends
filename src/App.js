@@ -20,6 +20,7 @@ import { getFilteredFriends } from './reducer/selector';
 import Home from './panels/Home';
 import Filters from './panels/Filters';
 
+const APP_ID = 7652360;
 const ACCESS_TOKEN = '';
 const COUNT_FRIENDS = 1000;
 const COUNT_REQUEST_EXECUTE = 25;
@@ -48,7 +49,7 @@ const App = () => {
 
   const getFriendsFriends = async () => {
     const authToken = await bridge.send("VKWebAppGetAuthToken", {
-      "app_id": 7652360,
+      "app_id": APP_ID,
       "scope": ""
     });
 
