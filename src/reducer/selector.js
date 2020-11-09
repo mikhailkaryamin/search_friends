@@ -20,11 +20,11 @@ const getFilteredFriendsList = (friends, setting) => {
     }
 
     if (lastName) {
-      isMatch[2] = friend.lastName === lastName;
+      isMatch[2] = friend.lastName.toLowerCase() === lastName.toLowerCase();
     }
 
     if (name) {
-      isMatch[3] = friend.name === name;
+      isMatch[3] = friend.name.toLowerCase() === name.toLowerCase();
     }
 
     return !isMatch.includes(false);
