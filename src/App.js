@@ -20,7 +20,7 @@ import { getFilteredFriends } from './reducer/selector';
 import Home from './panels/Home';
 import Filters from './panels/Filters';
 
-const ACCESS_TOKEN = 'ef046dddef046dddef046dddf9ef70a9d5eef04ef046dddb0a2a9c6d4050623020481a7';
+const ACCESS_TOKEN = '';
 const COUNT_FRIENDS = 1000;
 const COUNT_REQUEST_EXECUTE = 25;
 
