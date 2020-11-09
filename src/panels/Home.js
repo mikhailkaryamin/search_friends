@@ -3,7 +3,8 @@ import {
   arrayOf,
   shape,
   string,
-  func
+  func,
+  number
 } from 'prop-types';
 
 import {
@@ -22,21 +23,20 @@ const formatGender = (gender) => {
   switch (gender) {
     case 1:
       return `жен`;
-  
     case 2:
       return `муж`;
-    
-    default: 
+    default:
       return `не определен`;
   }
-}
+};
 
 const Home = ({ friendsFiltered, setActiveModal }) => {
 
   return (
     <Panel>
       <PanelHeader
-        left={<PanelHeaderButton onClick={() => setActiveModal("filters")}>
+        left={
+          <PanelHeaderButton onClick={() => setActiveModal('filters')}>
             <Icon24Filter />
           </PanelHeaderButton>
         }
@@ -58,21 +58,23 @@ const Home = ({ friendsFiltered, setActiveModal }) => {
                   >
                     {`${friend.name} ${friend.lastName}`}
                   </Cell>
-                )
+                );
               })
             }
           </List>
         </Group>
       )}
-  </Panel>
-  )
+    </Panel>
+  );
 };
 
 Home.propTypes = {
   friendsFiltered: arrayOf(shape({
-    photo_100: string,
-    first_name: string,
-    last_name: string,
+    age: string | number,
+    avatar: string,
+    name: string,
+    lastName: string,
+    id: number,
   })),
   setActiveModal: func.isRequired,
 };
