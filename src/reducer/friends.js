@@ -10,8 +10,16 @@ const getAge = (date) => {
   }
 
   const dateArr = date.split(`.`);
-  const formatDate = dateArr.reverse().join(`-`);
-
+  const formatDate = dateArr.reverse().map(
+    (el) => {
+      if (el.length === 1) {
+        return `0${el}`
+      } else {
+        return el;
+      }
+    }
+  ).join(`-`);
+  
   if (dateArr.length <= 2) {
     return `не определен`;
   } else {

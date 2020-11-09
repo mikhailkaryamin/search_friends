@@ -37,13 +37,11 @@ const timeoutPromise = (timeout) => new Promise((resolve) => setTimeout(resolve,
 
 const App = () => {
   const [activeModal, setActiveModal] = useState(null);
-  const [authToken, setAuthToken] = useState(null);
   const [friendsUser, setFriendsUser] = useState(null);
   const [popout, setPopout] = useState(<ScreenSpinner size='large' />);
   const [userId, setUserId] = useState(null);
 
   const dispatch = useDispatch();
-
   const friends = useSelector((state) => state.friends, shallowEqual);
   const friendsFiltered = useSelector((state) => getFilteredFriends(state), shallowEqual);
   const idFriends = useSelector((state) => state.idFriends, shallowEqual);
