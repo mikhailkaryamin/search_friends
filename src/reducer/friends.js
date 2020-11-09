@@ -15,13 +15,13 @@ const getAge = (date) => {
   if (dateArr.length <= 2) {
     return `не определен`;
   } else {
-    let dateCon = Math.floor((+(Date.parse(formatDate)) / MS_IN_DAY) / DAYS_IN_YEAR);
+    let age = Math.floor((+(Date.parse(formatDate)) / MS_IN_DAY) / DAYS_IN_YEAR);
 
-    if (dateCon < 0) {
-      dateCon = YEARS_FROM_1970 + (-dateCon);
+    if (age < 0) {
+      age = YEARS_FROM_1970 + (-age);
     }
 
-    return dateCon;
+    return age;
   }
 };
 
