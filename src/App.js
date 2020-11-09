@@ -21,7 +21,7 @@ import Home from './panels/Home';
 import Filters from './panels/Filters';
 
 const APP_ID = 7652360;
-const ACCESS_TOKEN = '';
+const ACCESS_TOKEN = '5399545253995452539954523c53ed905a55399539954520c318114c06d538f13dd4977';
 const COUNT_FRIENDS = 1000;
 const COUNT_REQUEST_EXECUTE = 25;
 
@@ -37,6 +37,7 @@ const timeoutPromise = (timeout) => new Promise((resolve) => setTimeout(resolve,
 
 const App = () => {
   const [activeModal, setActiveModal] = useState(null);
+  const [authToken, setAuthToken] = useState(null);
   const [friendsUser, setFriendsUser] = useState(null);
   const [popout, setPopout] = useState(<ScreenSpinner size='large' />);
   const [userId, setUserId] = useState(null);
@@ -48,11 +49,6 @@ const App = () => {
   const idFriends = useSelector((state) => state.idFriends, shallowEqual);
 
   const getFriendsFriends = async () => {
-    const authToken = await bridge.send("VKWebAppGetAuthToken", {
-      "app_id": APP_ID,
-      "scope": "friends"
-    });
-
     const activeFriends = friendsUser.response.items.filter((friend) => {
       return checkActiveFriend(friend);
     });
@@ -146,10 +142,12 @@ const App = () => {
 
   useEffect(() => {
     async function fetchData() {
-      await bridge.send("VKWebAppGetAuthToken", {
+      const token = await bridge.send("VKWebAppGetAuthToken", {
         "app_id": APP_ID,
         "scope": "friends"
       });
+
+      setAuthToken(token);
       const user = await bridge.send('VKWebAppGetUserInfo');
       setUserId(user.id);
       dispatch(ActionFriends.pushFriendsId([user.id]));
