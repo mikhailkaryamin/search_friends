@@ -21,7 +21,7 @@ import Home from './panels/Home';
 import Filters from './panels/Filters';
 
 const APP_ID = 7652360;
-const ACCESS_TOKEN = '5399545253995452539954523c53ed905a55399539954520c318114c06d538f13dd4977';
+const ACCESS_TOKEN = '';
 const COUNT_FRIENDS = 1000;
 const COUNT_REQUEST_EXECUTE = 25;
 
