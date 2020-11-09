@@ -24,8 +24,16 @@ const APP_ID = 7652360;
 const COUNT_FRIENDS = 1000;
 const COUNT_REQUEST_EXECUTE = 25;
 
+const checkIsClosed = (friend) => {
+  if (friend['is_closed']) {
+    return false;
+  }
+
+  return true;
+};
+
 const checkActiveFriend = (friend) => {
-  if (friend.hasOwnProperty('deactivated') || friend['is_closed']) {
+  if (friend.hasOwnProperty('deactivated')) {
     return false;
   }
 
@@ -48,7 +56,11 @@ const App = () => {
 
   const getFriendsFriends = async () => {
     const activeFriends = friendsUser.response.items.filter((friend) => {
-      return checkActiveFriend(friend);
+      if (idFriends.length === 1) {
+        return checkActiveFriend(friend);
+      }
+
+      return (checkActiveFriend(friend) && checkIsClosed(friend));
     });
 
     const activeFriendsId = activeFriends.map((friend) => {
@@ -150,6 +162,7 @@ const App = () => {
       const user = await bridge.send('VKWebAppGetUserInfo');
       setUserId(user.id);
       dispatch(ActionFriends.pushFriendsId([user.id]));
+
     }
 
     fetchData();
