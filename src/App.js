@@ -21,7 +21,6 @@ import Home from './panels/Home';
 import Filters from './panels/Filters';
 
 const APP_ID = 7652360;
-const ACCESS_TOKEN = '';
 const COUNT_FRIENDS = 1000;
 const COUNT_REQUEST_EXECUTE = 25;
 
@@ -37,6 +36,7 @@ const timeoutPromise = (timeout) => new Promise((resolve) => setTimeout(resolve,
 
 const App = () => {
   const [activeModal, setActiveModal] = useState(null);
+  const [accessToken, setAccessToken] = useState(null);
   const [friendsUser, setFriendsUser] = useState(null);
   const [popout, setPopout] = useState(<ScreenSpinner size='large' />);
   const [userId, setUserId] = useState(null);
@@ -47,11 +47,6 @@ const App = () => {
   const idFriends = useSelector((state) => state.idFriends, shallowEqual);
 
   const getFriendsFriends = async () => {
-    const authToken = await bridge.send("VKWebAppGetAuthToken", {
-      "app_id": APP_ID,
-      "scope": "friends"
-    });
-
     const activeFriends = friendsUser.response.items.filter((friend) => {
       return checkActiveFriend(friend);
     });
@@ -98,7 +93,7 @@ const App = () => {
                     };
                     return fetchedFriends;`,
           "v":"5.124",
-          "access_token": authToken.access_token,
+          "access_token": accessToken.access_token,
         }});
 
       fetchedFriends.response.flat().forEach((friend) => {
@@ -145,10 +140,12 @@ const App = () => {
 
   useEffect(() => {
     async function fetchData() {
-      await bridge.send("VKWebAppGetAuthToken", {
+      const token = await bridge.send("VKWebAppGetAuthToken", {
         "app_id": APP_ID,
         "scope": "friends"
       });
+
+      setAccessToken(token);
 
       const user = await bridge.send('VKWebAppGetUserInfo');
       setUserId(user.id);
@@ -167,7 +164,7 @@ const App = () => {
           "params": {
             "user_id": userId,
             "v":"5.124",
-            "access_token": ACCESS_TOKEN,
+            "access_token": accessToken.access_token,
             "fields": "first_name, last_name, sex, bdate, photo_100",
           }
         });
